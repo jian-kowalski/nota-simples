@@ -1,0 +1,167 @@
+unit uFrmPrincipal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uNotaFiscal, Vcl.StdCtrls, Vcl.ComCtrls,
+  Vcl.Tabs, Vcl.DockTabSet;
+
+type
+  TFrmPrincipal = class(TForm)
+    pgControl: TPageControl;
+    tbNota: TTabSheet;
+    Label1: TLabel;
+    lbEndereco: TLabel;
+    lbNome: TLabel;
+    lbNumero: TLabel;
+    btInlcuir: TButton;
+    eb_endereco: TEdit;
+    eb_nome: TEdit;
+    eb_numero: TEdit;
+    eb_valorTotal: TEdit;
+    tbItens: TTabSheet;
+    mmResposta: TMemo;
+    lbDesc: TLabel;
+    eb_descricao: TEdit;
+    lbQuantidade: TLabel;
+    eb_quantidade: TEdit;
+    lbValorUnitario: TLabel;
+    eb_valorUnitario: TEdit;
+    btAddItem: TButton;
+    btVoltar: TButton;
+    btAvancar: TButton;
+    btRemover: TButton;
+    eb_codigo: TEdit;
+    Label2: TLabel;
+    procedure FormCreate(Sender: TObject);
+    procedure btInlcuirClick(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure btAddItemClick(Sender: TObject);
+    procedure btVoltarClick(Sender: TObject);
+    procedure btAvancarClick(Sender: TObject);
+    procedure btRemoverClick(Sender: TObject);
+  private
+    { Private declarations }
+    FnPosicaoDaLista: Integer;
+    FoNota: TNotaFiscal;
+    procedure IncluirNota;
+    procedure AdicionarItem;
+    procedure ExibirNota;
+    procedure VoltarItem;
+    procedure DoObjetoParaTela;
+    procedure AvancarItem;
+    procedure RemoverItem;
+  public
+    { Public declarations }
+  end;
+
+var
+  FrmPrincipal: TFrmPrincipal;
+
+implementation
+
+uses
+  uItem;
+
+{$R *.dfm}
+
+procedure TFrmPrincipal.btInlcuirClick(Sender: TObject);
+begin
+  IncluirNota;
+  pgControl.TabIndex := tbItens.TabIndex;
+end;
+
+procedure TFrmPrincipal.btRemoverClick(Sender: TObject);
+begin
+  RemoverItem;
+end;
+
+procedure TFrmPrincipal.btVoltarClick(Sender: TObject);
+begin
+  VoltarItem;
+end;
+
+procedure TFrmPrincipal.ExibirNota;
+begin
+  mmResposta.Lines.Clear;
+  mmResposta.Lines.Add(FoNota.ToString);
+  eb_valorTotal.Text := FloatToStr(FoNota.CalcularValorTotalNota);
+end;
+
+procedure TFrmPrincipal.btAddItemClick(Sender: TObject);
+begin
+  AdicionarItem;
+  ExibirNota;
+end;
+
+procedure TFrmPrincipal.btAvancarClick(Sender: TObject);
+begin
+  AvancarItem;
+end;
+
+procedure TFrmPrincipal.FormCreate(Sender: TObject);
+begin
+  FoNota := TNotaFiscal.Create;
+  FnPosicaoDaLista := 0;
+end;
+
+procedure TFrmPrincipal.FormDestroy(Sender: TObject);
+begin
+  FoNota.Free;
+end;
+
+procedure TFrmPrincipal.IncluirNota;
+begin
+  FoNota.Nome     := eb_nome.Text;
+  FoNota.Endereco := eb_endereco.Text;
+  FoNota.NumeroNf := StrToInt(eb_numero.Text);
+end;
+
+procedure TFrmPrincipal.RemoverItem;
+begin
+  FoNota.Itens.Delete(FnPosicaoDaLista);
+end;
+
+procedure TFrmPrincipal.AvancarItem;
+begin
+  try
+    Inc(FnPosicaoDaLista);
+    DoObjetoParaTela;
+  except
+    ShowMessage('Voce esta no ultimo item');
+    Dec(FnPosicaoDaLista);
+  end;
+end;
+
+procedure TFrmPrincipal.VoltarItem;
+begin
+  try
+    Dec(FnPosicaoDaLista);
+    DoObjetoParaTela;
+  except
+    ShowMessage('Voce esta no primeiro item');
+    Inc(FnPosicaoDaLista);
+  end;
+end;
+
+procedure TFrmPrincipal.DoObjetoParaTela;
+begin
+  eb_descricao.Text     := FoNota.Itens[FnPosicaoDaLista].Descricao; //tem que vir a desc do item
+  eb_valorUnitario.Text := FoNota.Itens[FnPosicaoDaLista].ValorUnitario.ToString; // Tem que receber o valor unit do item
+  eb_quantidade.Text    := FoNota.Itens[FnPosicaoDaLista].Quantidade.ToString; // Tem que receber a quantidade
+end;
+
+procedure TFrmPrincipal.AdicionarItem;
+var
+  oItem: TItem;
+begin
+  oItem               := TItem.Create;
+  oItem.Descricao     := eb_descricao.Text;
+  oItem.ValorUnitario := StrToFloat(eb_valorUnitario.Text);
+  oItem.Quantidade    := StrToFloat(eb_quantidade.Text);
+  FoNota.Itens.Add(oItem);
+  FnPosicaoDaLista    := FoNota.Itens.Count-1;
+end;
+
+end.

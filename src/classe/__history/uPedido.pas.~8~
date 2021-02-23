@@ -1,0 +1,35 @@
+unit uPedido;
+
+interface
+
+uses
+  System.Generics.Collections, uItem, uListaDeItem;
+
+type
+  TPedido = class
+  private
+    FNome: string;
+    FPedido: Integer;
+    FoListaDeItens: TListaItens;
+    function GetItens: TListaItens;
+    procedure SetItens(const Value: TListaItens);
+  public
+   property  Itens: TListaItens read GetItens write SetItens;
+   property  Nome: string read GetNome write SetNome;
+  end;
+
+implementation
+
+{ TPedido }
+
+function TPedido.GetItens: TListaItens;
+begin
+  Result := FoListaDeItens;
+end;
+
+procedure TPedido.SetItens(const Value: TListaItens);
+begin
+  FoListaDeItens := Value;
+end;
+
+end.

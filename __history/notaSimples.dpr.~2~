@@ -1,0 +1,17 @@
+program notaSimples;
+
+uses
+  Vcl.Forms,
+  uFrmPrincipal in 'src\view\uFrmPrincipal.pas' {FrmPrincipal},
+  uNotaFiscal in 'src\classe\uNotaFiscal.pas',
+  uExcepition in 'src\excepition\uExcepition.pas',
+  uItem in 'src\classe\uItem.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TFrmPrincipal, FrmPrincipal);
+  Application.Run;
+end.

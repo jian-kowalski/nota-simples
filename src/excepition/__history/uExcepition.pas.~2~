@@ -1,0 +1,18 @@
+unit uExcepition;
+
+interface
+
+uses
+  System.SysUtils;
+
+type
+  ENomeObrigatorio= class(Exception);
+
+  EEnderecoObrigatorio= class(Exception);
+
+  ENumeroNFObrigatorio= class(Exception);
+
+
+implementation
+
+end.

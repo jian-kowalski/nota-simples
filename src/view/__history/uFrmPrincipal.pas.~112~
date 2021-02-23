@@ -1,0 +1,50 @@
+unit uFrmPrincipal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TFrmPrincipal = class(TForm)
+    btAbrirNota: TButton;
+    btAbrirPedido: TButton;
+    procedure btAbrirNotaClick(Sender: TObject);
+    procedure btAbrirPedidoClick(Sender: TObject);
+  private
+    { Private declarations }
+    procedure AbrirNota;
+    procedure AbrirPedido;
+  public
+    { Public declarations }
+  end;
+
+var
+  FrmPrincipal: TFrmPrincipal;
+
+implementation
+
+{$R *.dfm}
+
+procedure TFrmPrincipal.AbrirNota;
+begin
+
+end;
+
+procedure TFrmPrincipal.AbrirPedido;
+begin
+
+end;
+
+procedure TFrmPrincipal.btAbrirNotaClick(Sender: TObject);
+begin
+  AbrirNota;
+end;
+
+procedure TFrmPrincipal.btAbrirPedidoClick(Sender: TObject);
+begin
+  AbrirPedido;
+end;
+
+end.
